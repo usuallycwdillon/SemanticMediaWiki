@@ -42,6 +42,7 @@ class OutputPageParserOutputTest extends \PHPUnit_Framework_TestCase {
 			'smwgCacheType'                   => 'hash',
 			'smwgLinksInValues'               => false,
 			'smwgInlineErrors'                => true,
+			'smwgEnabledAuxillaryTextDecoder' => false
 		) );
 
 		$this->applicationFactory->registerObject( 'Settings', $settings );

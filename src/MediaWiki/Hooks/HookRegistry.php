@@ -7,6 +7,7 @@ use RuntimeException;
 use SMW\ApplicationFactory;
 use SMW\NamespaceManager;
 use SMW\ParameterFormatterFactory;
+use SMW\MediaWiki\TextStripMarkerDecoder;
 
 /**
  * @license GNU GPL v2+
@@ -277,8 +278,16 @@ class HookRegistry {
 		 *
 		 * @see https://www.mediawiki.org/wiki/Manual:Hooks/InternalParseBeforeLinks
 		 */
-		$functionHookDefinition['InternalParseBeforeLinks'] = function ( &$parser, &$text ) {
-			$internalParseBeforeLinks = new InternalParseBeforeLinks( $parser, $text );
+		$functionHookDefinition['InternalParseBeforeLinks'] = function ( &$parser, &$text, &$stripState ) {
+
+			$textStripMarkerDecoder = new TextStripMarkerDecoder( $stripState );
+
+			$internalParseBeforeLinks = new InternalParseBeforeLinks(
+				$parser,
+				$text,
+				$textStripMarkerDecoder
+			);
+
 			return $internalParseBeforeLinks->process();
 		};
 

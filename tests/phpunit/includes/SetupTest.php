@@ -266,12 +266,6 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			case 'BeforePageDisplay':
 				$result = $this->callObject( $object, array( &$outputPage, &$skin ) );
 				break;
-			case 'InternalParseBeforeLinks':
-				$result = $this->callObject( $object, array( &$parser, &$empty ) );
-				break;
-			case 'ParserAfterTidy':
-				$result = $this->callObject( $object, array( &$parser, &$empty ) );
-				break;
 			case 'LinksUpdateConstructed':
 				$result = $this->callObject( $object, array( $linksUpdate ) );
 				break;
@@ -532,12 +526,10 @@ class SetupTest extends \PHPUnit_Framework_TestCase {
 			'SkinAfterContent',
 			'OutputPageParserOutput',
 			'BeforePageDisplay',
-			'InternalParseBeforeLinks',
 			'TitleMoveComplete',
 			'NewRevisionFromEditComplete',
 			'ArticlePurge',
 			'ArticleDelete',
-			'ParserAfterTidy',
 			'LinksUpdateConstructed',
 			'SpecialStatsAddExtra',
 			'BaseTemplateToolbox',

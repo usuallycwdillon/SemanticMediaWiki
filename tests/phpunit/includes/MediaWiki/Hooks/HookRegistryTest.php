@@ -71,13 +71,65 @@ class HookRegistryTest extends \PHPUnit_Framework_TestCase {
 			->disableOriginalConstructor()
 			->getMock();
 
+		$this->assertThatHookIsExcutable(
+			'EditPage::showEditForm:initial',
+			array( $editPage, $outputPage )
+		);
+	}
+
+	public function testCanExecuteInternalParseBeforeLinks() {
+
+		$parser = $this->getMockBuilder( '\Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$stripState = $this->getMockBuilder( '\StripState' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$text = '';
+
+		$this->assertThatHookIsExcutable(
+			'InternalParseBeforeLinks',
+			array( &$parser, &$text, &$stripState )
+		);
+	}
+
+	public function testCanExecuteParserAfterTidy() {
+
+		$title = Title::newFromText( 'Foo' );
+
+		$parserOutput = $this->getMockBuilder( '\ParserOutput' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser = $this->getMockBuilder( '\Parser' )
+			->disableOriginalConstructor()
+			->getMock();
+
+		$parser->expects( $this->any() )
+			->method( 'getTitle' )
+			->will( $this->returnValue( $title ) );
+
+		$parser->expects( $this->any() )
+			->method( 'getOutput' )
+			->will( $this->returnValue( $parserOutput ) );
+
+		$text = '';
+
+		$this->assertThatHookIsExcutable(
+			'ParserAfterTidy',
+			array( &$parser, &$text )
+		);
+	}
+
+	private function assertThatHookIsExcutable( $name, array $arguments ) {
+
 		$instance = new HookRegistry();
 
-		$this->assertTrue(
-			call_user_func_array(
-				$instance->getDefinition( 'EditPage::showEditForm:initial' ),
-				array( $editPage, $outputPage )
-			)
+		$this->assertInternalType(
+			'boolean',
+			call_user_func_array( $instance->getDefinition( $name ), $arguments )
 		);
 	}
 

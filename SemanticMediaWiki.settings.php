@@ -777,8 +777,8 @@ $GLOBALS['smwgEnabledEditPageHelp'] = true;
 ##
 
 ###
-# SMW_DIFF_UPDATE (default) - As the default option it will compute the `diff`
-# of an existing data set and only initiate an update on selected tables
+# SMW_DIFF_UPDATE (default) - The default option it will compute the `diff`
+# of an existing data set and only initiate an update on selected db-tables
 #
 # SMW_REPLACEMENT_UPDATE - This option is meant to be used to safeguard data
 # integrity and force a complete replacement of a data set during an update.
@@ -799,7 +799,7 @@ $GLOBALS['smwgUFeatures'] = SMW_DIFF_UPDATE;
 #
 # Log settings
 #
-# - `smwgLogEventTypes` make event types loggable and viewable in Special:Log
+# - `smwgLogEventTypes` make event types loggable and viewable via Special:Log
 #
 # - `sqlstore-query-execution` (default = false) to log events during query execution
 # of the SQLStore
@@ -809,4 +809,13 @@ $GLOBALS['smwgUFeatures'] = SMW_DIFF_UPDATE;
 $GLOBALS['smwgLogEventTypes'] = array(
 	'sqlstore-query-execution' => false
 );
+##
+
+###
+#
+# Enable to unstrip decoded parser text elements (e.g. `<nowiki>` etc.)
+#
+# @since 2.2
+##
+$GLOBALS['smwgEnabledAuxillaryTextDecoder'] = false;
 ##

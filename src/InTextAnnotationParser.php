@@ -4,6 +4,7 @@ namespace SMW;
 
 use SMW\MediaWiki\MagicWordFinder;
 use SMW\MediaWiki\RedirectTargetFinder;
+use SMW\MediaWiki\TextStripMarkerDecoder;
 use SMWOutputs;
 use Title;
 
@@ -55,6 +56,11 @@ class InTextAnnotationParser {
 	 * @var Settings
 	 */
 	protected $settings = null;
+
+	/**
+	 * @var TextStripMarkerDecoder
+	 */
+	private $stripMarkerDecoder = null;
 
 	/**
 	 * @var boolean
@@ -113,6 +119,15 @@ class InTextAnnotationParser {
 		$this->parserData->pushSemanticDataToParserOutput();
 
 		SMWOutputs::commitToParserOutput( $this->parserData->getOutput() );
+	}
+
+	/**
+	 * @since 2.2
+	 *
+	 * @param TextStripMarkerDecoder $stripMarkerDecoder
+	 */
+	public function setStripMarkerDecoder( TextStripMarkerDecoder $stripMarkerDecoder ) {
+		$this->stripMarkerDecoder = $stripMarkerDecoder;
 	}
 
 	/**
@@ -284,12 +299,17 @@ class InTextAnnotationParser {
 	protected function addPropertyValue( array $properties, $value, $valueCaption ) {
 
 		$subject = $this->parserData->getSemanticData()->getSubject();
+		$hasStripMarker = false;
+
+		if ( $this->stripMarkerDecoder !== null && $this->stripMarkerDecoder->canUseDecoder() ) {
+			$hasStripMarker = $this->stripMarkerDecoder->hasStripMarker( $value );
+		}
 
 		// Add properties to the semantic container
 		foreach ( $properties as $property ) {
 			$dataValue = $this->dataValueFactory->newPropertyValue(
 				$property,
-				$value,
+				$hasStripMarker ? $this->stripMarkerDecoder->unstrip( $value ) : $value,
 				$valueCaption,
 				$subject
 			);
@@ -300,7 +320,7 @@ class InTextAnnotationParser {
 		}
 
 		// Return the text representation
-		$result = $dataValue->getShortWikitext( true );
+		$result = $hasStripMarker ? $this->stripMarkerDecoder->getRawText() : $dataValue->getShortWikitext( true );
 
 		// If necessary add an error text
 		if ( ( $this->settings->get( 'smwgInlineErrors' ) &&

@@ -39,7 +39,8 @@ class FactboxCacheTest extends \PHPUnit_Framework_TestCase {
 			'smwgFactboxUseCache' => true,
 			'smwgCacheType'       => 'hash',
 			'smwgLinksInValues'   => false,
-			'smwgInlineErrors'    => true
+			'smwgInlineErrors'    => true,
+			'smwgEnabledAuxillaryTextDecoder' => false
 		) );
 
 		$this->applicationFactory->registerObject( 'Settings', $settings );
