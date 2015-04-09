@@ -77,16 +77,11 @@ class CategoryQueryResultPrinterIntegrationTest extends MwDBaseUnitTestCase {
 		$parserOutput = $this->pageCreator->getEditInfo()->output;
 
 		$expected = array(
-			'<div style="float: left; width: 33%;">',
-			'id=".E3.83.86">テ</span>',
-			'title="テスト">テスト</a>',
-			'<div style="float: left; width: 33%;">',
-			'id="B">B</span>',
-			'title="Bar">Bar</a>',
-			'<div style="float: left; width: 33%;">',
-			'id="F">F</span>',
-			'title="Foo">Foo</a>',
-			'<br style="clear: both;" />'
+			'<div class="smw-columnlist-container">',
+			'<div class="smw-column" style="float: left; width:33%; word-wrap: break-word;"><div class="smw-column-header">テ</div>',
+			'<div class="smw-column" style="float: left; width:33%; word-wrap: break-word;"><div class="smw-column-header">F</div>',
+			'<div class="smw-column" style="float: left; width:33%; word-wrap: break-word;"><div class="smw-column-header">B</div>',
+			'<br style="clear: both;" /></div>'
 		);
 
 		$this->stringValidator->assertThatStringContains(
